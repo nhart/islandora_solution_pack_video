@@ -9,6 +9,17 @@
  * Implements hook_preprocess().
  */
 function islandora_video_preprocess_islandora_video(array &$variables) {
+
+  dsm(drupal_get_query_parameters(), 'params');
+  $params = drupal_get_query_parameters();
+  $path =  (isset($params['islandora_solr_search_return_path']) ? $params['islandora_solr_search_return_path'] : NULL);
+  $query = (isset($params['islandora_solr_search_return_query']) ? $params['islandora_solr_search_return_query'] : array());
+  if ($path) {
+    $variables['search_return_link'] = l(t('Return to search'), url($path, array('query' => $query, 'absolute' => TRUE)));
+  }
+
+
+  dsm($variables, 'vars');
   module_load_include('inc', 'islandora', 'includes/datastream');
   module_load_include('inc', 'islandora', 'includes/utilities');
   module_load_include('inc', 'islandora', 'includes/solution_packs');

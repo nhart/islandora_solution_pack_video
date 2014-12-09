@@ -183,3 +183,19 @@ function islandora_video_islandora_sp_videoCModel_islandora_derivative() {
   }
   return $derivatives;
 }
+
+
+function islandora_video_islandora_solr_results_alter(&$search_results, $query_processor) {
+  $path = current_path();
+  $params = $query_processor->internalSolrParams;
+
+  $page_params = drupal_get_query_parameters();
+  if (isset($page_params['page'])) {
+    $params = array_merge($params, array('page' => $page_params['page']));
+  }
+  foreach ($search_results as &$doc) {
+    $doc['object_url_params']['islandora_solr_search_return_path'] = $path;
+    $doc['object_url_params']['islandora_solr_search_return_query'] = $params;
+
+  }
+}
